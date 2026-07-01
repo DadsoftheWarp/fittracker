@@ -60,7 +60,8 @@ body { display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; 
 .nav-btn.active { color: #1D9E75; }
 
 /* ── Screens ── */
-.screen { display: none; flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+main { flex: 1; min-height: 0; position: relative; }
+.screen { display: none; position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
 .screen.active { display: block; }
 .pad { padding: 16px; }
 
