@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FitTracker">
+<meta name="theme-color" content="#0F6E56">
+<meta name="description" content="Personal fat loss and workout tracker">
+<title>Fit Tracker</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<link rel="stylesheet" href="css/app.css">
+
+<!-- Apple touch icons (inline generated) -->
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+
+<!-- ── Header ───────────────────────────────────────────────── -->
+<header class="header">
+  <div class="header-row">
+    <div>
+      <div class="header-title" id="header-title">Fit Tracker</div>
+      <div class="header-date" id="header-date"></div>
+    </div>
+    <div class="streak-badge">
+      <i class="ti ti-flame" style="font-size:14px" aria-hidden="true"></i>
+      <span id="streak-count">0</span> day streak
+    </div>
+  </div>
+</header>
+
+<!-- ── Screens ───────────────────────────────────────────────── -->
+<main>
+
+  <section id="screen-today" class="screen active" aria-label="Today's workout">
+    <div class="pad" id="today-content"></div>
+  </section>
+
+  <section id="screen-week" class="screen" aria-label="Weekly plan">
+    <div class="pad">
+      <div class="week-grid" id="week-grid"></div>
+      <div id="week-detail"></div>
+    </div>
+  </section>
+
+  <section id="screen-progress" class="screen" aria-label="Progress">
+    <div class="pad">
+      <div class="stats-grid" id="stats-grid"></div>
+
+      <div class="section-label">Workout streak — last 8 weeks</div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Done</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#F09595"></div>Missed</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--gray-200)"></div>Rest</div>
+      </div>
+      <div class="streak-cal" id="streak-cal"></div>
+
+      <div class="section-label">Inches lost per area</div>
+      <div class="progress-section" id="measure-bars"></div>
+
+      <div class="section-label">Total progress</div>
+      <div id="wins-section"></div>
+    </div>
+  </section>
+
+  <section id="screen-log" class="screen" aria-label="Log measurements">
+    <div class="pad">
+      <div class="card">
+        <div class="card-title" style="margin-bottom:14px">Log measurements</div>
+
+        <div class="field-group">
+          <label class="field-label" for="m-date">Date</label>
+          <input type="date" id="m-date">
+        </div>
+
+        <div class="field-2col">
+          <div>
+            <label class="field-label" for="m-waist">Waist (in)</label>
+            <input type="number" id="m-waist" placeholder="e.g. 48" step="0.25" min="0">
+          </div>
+          <div>
+            <label class="field-label" for="m-hips">Hips (in)</label>
+            <input type="number" id="m-hips" placeholder="e.g. 52" step="0.25" min="0">
+          </div>
+        </div>
+
+        <div class="field-2col">
+          <div>
+            <label class="field-label" for="m-thigh">Thigh (in)</label>
+            <input type="number" id="m-thigh" placeholder="e.g. 28" step="0.25" min="0">
+          </div>
+          <div>
+            <label class="field-label" for="m-chest">Chest (in)</label>
+            <input type="number" id="m-chest" placeholder="e.g. 54" step="0.25" min="0">
+          </div>
+        </div>
+
+        <button class="btn-primary" style="margin-top:8px" onclick="submitMeasurement()">
+          <i class="ti ti-plus" style="font-size:16px;vertical-align:-2px;margin-right:6px" aria-hidden="true"></i>Save measurement
+        </button>
+      </div>
+
+      <div class="section-label">History</div>
+      <div id="m-history"></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── Bottom nav ───────────────────────────────────────────── -->
+<nav class="nav" aria-label="Main navigation">
+  <button id="nav-today"    class="nav-btn active" onclick="showScreen('today')"    aria-label="Today">
+    <i class="ti ti-calendar-event" aria-hidden="true"></i>Today
+  </button>
+  <button id="nav-week"     class="nav-btn"        onclick="showScreen('week')"     aria-label="Week">
+    <i class="ti ti-layout-grid" aria-hidden="true"></i>Week
+  </button>
+  <button id="nav-progress" class="nav-btn"        onclick="showScreen('progress')" aria-label="Progress">
+    <i class="ti ti-chart-line" aria-hidden="true"></i>Progress
+  </button>
+  <button id="nav-log"      class="nav-btn"        onclick="showScreen('log')"      aria-label="Measure">
+    <i class="ti ti-ruler-measure" aria-hidden="true"></i>Measure
+  </button>
+</nav>
+
+<!-- ── Toast ────────────────────────────────────────────────── -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ── Scripts ──────────────────────────────────────────────── -->
+<script src="js/workouts.js"></script>
+<script src="js/data.js"></script>
+<script src="js/screens.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
