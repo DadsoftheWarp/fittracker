@@ -33,8 +33,8 @@ const WORKOUTS = {
     icon: 'ti-walk',
     exercises: [
       { name: 'Treadmill easy walk', detail: '30 min at 2–3% incline', tip: 'Keep it genuinely easy — this is recovery, not a workout. Heart rate under 120.' },
-      { name: 'Hip flexor stretch',  detail: '2 min each side',        tip: 'Hold at tension, breathe deeply and relax further into it each exhale' },
-      { name: 'Hamstring stretch',   detail: '2 min each side',        tip: 'Slight knee bend is fine — never force it, especially at bodyweight' },
+      { name: 'Hip flexor stretch',  detail: '2 min each side',        tip: 'Hold at tension, breathe deeply and relax further into it each exhale',        desc: 'Kneel on one knee (half-kneeling position) with your back knee on the floor and front foot flat. Shift your hips forward slowly until you feel a stretch at the front of your back hip and thigh. Keep your torso upright and core lightly braced.' },
+      { name: 'Hamstring stretch',   detail: '2 min each side',        tip: 'Slight knee bend is fine — never force it, especially at bodyweight',               desc: 'Sit on the floor with one leg extended straight, the other bent comfortably. Keeping your back flat, hinge forward at the hips toward your extended foot until you feel a stretch in the back of your thigh. Do not round your lower back.' },
     ]
   },
   Thu: {
@@ -130,3 +130,49 @@ const NUTRITION_RULES = [
   { icon: 'ti-package',   title: 'Cut ultra-processed foods, not carbs', body: 'Chips, crackers, fast food — minimize them. Rice, potatoes, oats, and fruit are fine. You need carbs to fuel training.' },
   { icon: 'ti-clock',     title: 'Stop eating 2–3 hrs before bed', body: 'Late-night eating keeps insulin elevated overnight and blocks fat burning during sleep — your most productive fat-loss window.' },
 ];
+
+// ── Daily meal suggestions ────────────────────────────────────────────────
+const MEALS = {
+  Mon: [
+    { type: 'Breakfast', name: 'Eggs & oats',            items: ['5 scrambled eggs', '1½ cups oatmeal with cinnamon', 'Black coffee'],                           protein: 42, cals: 520 },
+    { type: 'Lunch',     name: 'Chicken rice bowl',       items: ['8 oz grilled chicken breast', '1½ cups white rice', 'Steamed broccoli + olive oil'],           protein: 65, cals: 620 },
+    { type: 'Snack',     name: 'Cottage cheese',          items: ['1½ cups cottage cheese', 'Sliced cucumber', '1 apple'],                                        protein: 32, cals: 240 },
+    { type: 'Dinner',    name: 'Beef & sweet potato',     items: ['8 oz 90% lean ground beef', '1 large sweet potato', 'Sautéed peppers & zucchini'],             protein: 58, cals: 600 },
+  ],
+  Tue: [
+    { type: 'Breakfast', name: 'Greek yogurt power bowl', items: ['1½ cups plain Greek yogurt', '1 cup berries', '2 tbsp peanut butter', 'Black coffee'],        protein: 45, cals: 490 },
+    { type: 'Lunch',     name: 'Ground turkey bowl',      items: ['8 oz ground turkey (93%)', '1½ cups rice', 'Salsa + shredded lettuce'],                        protein: 62, cals: 580 },
+    { type: 'Snack',     name: 'Eggs & fruit',            items: ['3 hard-boiled eggs', '1 banana', 'Handful of almonds'],                                        protein: 24, cals: 310 },
+    { type: 'Dinner',    name: 'Salmon & vegetables',     items: ['8 oz salmon fillet', 'Roasted asparagus + olive oil', '½ cup white rice'],                     protein: 60, cals: 580 },
+  ],
+  Wed: [
+    { type: 'Breakfast', name: 'Veggie egg scramble',     items: ['5 eggs', 'Spinach, peppers, onion', '2 slices whole grain toast', 'Black coffee'],             protein: 38, cals: 510 },
+    { type: 'Lunch',     name: 'Tuna salad plate',        items: ['2 cans tuna in water', 'Mixed greens + olive oil', '½ cup cottage cheese', 'Crackers'],        protein: 60, cals: 520 },
+    { type: 'Snack',     name: 'Protein shake',           items: ['2 scoops whey protein', '1 cup milk', '1 banana'],                                             protein: 52, cals: 380 },
+    { type: 'Dinner',    name: 'Chicken thighs & greens', items: ['8 oz chicken thighs (skin off)', 'Roasted broccoli + garlic', '1 cup white rice'],             protein: 58, cals: 560 },
+  ],
+  Thu: [
+    { type: 'Breakfast', name: 'Eggs & potatoes',         items: ['5 eggs any style', '1 cup diced potatoes (roasted)', 'Salsa', 'Black coffee'],                 protein: 36, cals: 530 },
+    { type: 'Lunch',     name: 'Lean beef rice bowl',     items: ['8 oz 90% lean ground beef', '1½ cups rice', 'Roasted sweet corn + black beans'],               protein: 62, cals: 650 },
+    { type: 'Snack',     name: 'Greek yogurt & nuts',     items: ['1 cup plain Greek yogurt', 'Handful of walnuts', '1 orange'],                                  protein: 22, cals: 310 },
+    { type: 'Dinner',    name: 'Tilapia & vegetables',    items: ['10 oz tilapia fillets', 'Sautéed zucchini & bell pepper', '1 cup white rice'],                  protein: 62, cals: 560 },
+  ],
+  Fri: [
+    { type: 'Breakfast', name: 'Cottage cheese bowl',     items: ['1½ cups cottage cheese', '1 cup pineapple chunks', '2 tbsp peanut butter', 'Black coffee'],    protein: 42, cals: 480 },
+    { type: 'Lunch',     name: 'Chicken salad wrap',      items: ['8 oz grilled chicken', 'Large flour tortilla', 'Lettuce, tomato, avocado, Greek yogurt'],       protein: 58, cals: 620 },
+    { type: 'Snack',     name: 'Hard-boiled eggs',        items: ['4 hard-boiled eggs', '1 apple', 'String cheese'],                                              protein: 34, cals: 310 },
+    { type: 'Dinner',    name: 'Pork tenderloin & sides', items: ['10 oz pork tenderloin', 'Roasted sweet potato', 'Steamed green beans'],                        protein: 62, cals: 560 },
+  ],
+  Sat: [
+    { type: 'Breakfast', name: 'Pre-workout protein oats', items: ['1½ cups oats', '1 scoop protein powder', '1 banana', 'Black coffee'],                         protein: 42, cals: 560 },
+    { type: 'Lunch',     name: 'Post-workout chicken',     items: ['10 oz grilled chicken breast', '2 cups white rice', 'Broccoli + teriyaki sauce (light)'],      protein: 78, cals: 720 },
+    { type: 'Snack',     name: 'Cottage cheese & fruit',  items: ['1½ cups cottage cheese', '1 cup strawberries', '1 tbsp honey'],                                protein: 32, cals: 240 },
+    { type: 'Dinner',    name: 'Steak & sweet potato',    items: ['8 oz sirloin steak', '1 large sweet potato', 'Side salad + olive oil'],                        protein: 60, cals: 600 },
+  ],
+  Sun: [
+    { type: 'Breakfast', name: 'Sunday eggs',             items: ['5 eggs over-easy', '2 slices turkey bacon', '1 cup fruit salad', 'Black coffee'],               protein: 40, cals: 480 },
+    { type: 'Lunch',     name: 'Meal prep chicken bowl',  items: ['8 oz rotisserie chicken (no skin)', '1½ cups rice', 'Roasted vegetables'],                      protein: 62, cals: 580 },
+    { type: 'Snack',     name: 'Beef jerky & almonds',    items: ['2 oz beef jerky', 'Handful of almonds', '1 orange'],                                           protein: 22, cals: 280 },
+    { type: 'Dinner',    name: 'Salmon & greens',         items: ['8 oz salmon', 'Large spinach salad + olive oil + lemon', '1 cup quinoa'],                       protein: 58, cals: 580 },
+  ],
+};

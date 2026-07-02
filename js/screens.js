@@ -38,6 +38,7 @@ function buildWorkoutCard(day, dateStr, interactive) {
         <div class="ex-name ${checked ? 'done' : ''}">${ex.name}</div>
         <div class="ex-detail">${ex.detail}</div>
         ${ex.tip ? `<div class="ex-tip">${ex.tip}</div>` : ''}
+        ${ex.desc ? `<div class="ex-desc">${ex.desc}</div>` : ''}
       </div>
     </div>`;
   });
@@ -94,7 +95,74 @@ function renderToday() {
     </div>`;
   }
 
+  html += buildWaterCard();
+  html += buildMealCard(day);
+
   document.getElementById('today-content').innerHTML = html;
+}
+
+function buildWaterCard() {
+  const oz      = getWaterToday();
+  const pct     = Math.min(100, (oz / WATER_GOAL_OZ) * 100);
+  const glasses  = Math.round(oz / 8);
+  const maxDots  = 15;
+  const done     = oz >= WATER_GOAL_OZ;
+
+  let dots = '';
+  for (let i = 0; i < maxDots; i++) {
+    dots += `<div class="water-dot${i < glasses ? ' filled' : ''}"></div>`;
+  }
+
+  return `
+    <div class="section-label">Water intake</div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+        <div style="font-size:22px;font-weight:800;color:var(--text-primary)">${oz}<span style="font-size:13px;font-weight:400;color:var(--text-muted)"> / ${WATER_GOAL_OZ} oz</span></div>
+        <div style="font-size:12px;font-weight:600;color:${done ? 'var(--fill-accent)' : 'var(--text-secondary)'}">
+          ${done ? 'Goal reached!' : (WATER_GOAL_OZ - oz) + ' oz to go'}
+        </div>
+      </div>
+      <div class="water-bar-bg"><div class="water-bar-fill" style="width:${pct.toFixed(1)}%"></div></div>
+      <div class="water-dots">${dots}</div>
+      <div style="display:flex;gap:8px;margin-top:14px">
+        <button class="btn-primary" style="margin-top:0;flex:1" onclick="handleWaterLog(8)">
+          <i class="ti ti-droplet-filled" style="font-size:15px;vertical-align:-2px;margin-right:6px" aria-hidden="true"></i>+ Glass (8 oz)
+        </button>
+        ${oz > 0 ? `<button class="btn-secondary" onclick="handleWaterLog(-8)" aria-label="Remove glass"><i class="ti ti-minus" aria-hidden="true"></i></button>` : ''}
+      </div>
+    </div>`;
+}
+
+function handleWaterLog(oz) {
+  logWater(oz);
+  renderToday();
+}
+
+function buildMealCard(day) {
+  const meals = MEALS[day];
+  if (!meals) return '';
+  const totalProtein = meals.reduce((s, m) => s + m.protein, 0);
+  const totalCals    = meals.reduce((s, m) => s + m.cals, 0);
+
+  const rows = meals.map(m => `
+    <div class="meal-row">
+      <div class="meal-type">${m.type}</div>
+      <div class="meal-body">
+        <div class="meal-name">${m.name}</div>
+        <div class="meal-items">${m.items.join(' · ')}</div>
+      </div>
+      <div class="meal-macro">${m.protein}g</div>
+    </div>`).join('');
+
+  return `
+    <div class="section-label">Suggested meals today</div>
+    <div class="card" style="padding-bottom:8px">
+      <div class="meal-header">
+        <span>What to eat</span>
+        <span style="color:var(--text-muted);font-size:11px">~${totalProtein}g protein · ~${totalCals} cal</span>
+      </div>
+      ${rows}
+    </div>`;
 }
 
 // ── WEEK ──────────────────────────────────────────────────────────────────
@@ -133,6 +201,58 @@ function renderWeekDetail(day) {
   document.getElementById('week-detail').innerHTML = buildWorkoutCard(day, todayISO(), false);
 }
 
+// ── WEEKLY REPORT ─────────────────────────────────────────────────────────
+function buildWeeklyReport() {
+  const workouts  = workoutsThisWeek();
+  const waterDays = waterGoalDaysThisWeek();
+  const hasWeight = weightLoggedThisWeek();
+  const streak    = currentStreak();
+
+  const now = new Date();
+  const mon = new Date(now); mon.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+  const weekLabel = mon.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+  function gradeColor(val, green, yellow) {
+    return val >= green ? 'var(--text-success)' : val >= yellow ? 'var(--text-warning)' : 'var(--text-danger)';
+  }
+  function miniBar(val, max, color) {
+    const pct = Math.min(100, (val / max) * 100);
+    return `<div style="height:5px;background:var(--surface-1);border-radius:99px;overflow:hidden;margin-top:5px">
+      <div style="height:100%;width:${pct}%;background:${color};border-radius:99px;transition:width .3s ease"></div>
+    </div>`;
+  }
+
+  const wColor = gradeColor(workouts, 4, 2);
+  const dColor = gradeColor(waterDays, 6, 4);
+
+  return `
+    <div class="report-card">
+      <div class="report-title">Week of ${weekLabel}</div>
+      <div class="report-grid">
+        <div class="report-item">
+          <div class="report-label">Workouts</div>
+          <div class="report-val" style="color:${wColor}">${workouts}/4</div>
+          ${miniBar(workouts, 4, wColor)}
+        </div>
+        <div class="report-item">
+          <div class="report-label">Water days</div>
+          <div class="report-val" style="color:${dColor}">${waterDays}/7</div>
+          ${miniBar(waterDays, 7, dColor)}
+        </div>
+        <div class="report-item">
+          <div class="report-label">Weight logged</div>
+          <div class="report-val" style="color:${hasWeight ? 'var(--text-success)' : 'var(--text-danger)'}">
+            ${hasWeight ? 'Done ✓' : 'Not yet'}
+          </div>
+        </div>
+        <div class="report-item">
+          <div class="report-label">Streak</div>
+          <div class="report-val" style="color:var(--fill-accent)">${streak} days</div>
+        </div>
+      </div>
+    </div>`;
+}
+
 // ── PROGRESS ──────────────────────────────────────────────────────────────
 function renderProgress() {
   const lost    = getWeightLost();
@@ -146,6 +266,8 @@ function renderProgress() {
   const currentW = state.bodyWeight.length
     ? state.bodyWeight[state.bodyWeight.length - 1].weight
     : state.settings.startWeight;
+
+  document.getElementById('weekly-report').innerHTML = buildWeeklyReport();
 
   document.getElementById('stats-grid').innerHTML = `
     <div class="stat-card">

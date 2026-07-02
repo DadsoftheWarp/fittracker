@@ -7,6 +7,7 @@ const DEFAULT_STATE = {
   measurements: [],
   foodLogs:     {},   // { 'YYYY-MM-DD': [{ time, food, notes }] }
   bodyWeight:   [],   // [{ date, weight }]
+  waterLog:     {},   // { 'YYYY-MM-DD': oz }
   settings: {
     name: '',
     startWeight: 305,
@@ -150,4 +151,31 @@ function deleteFoodEntry(date, id) {
   if (!state.foodLogs[date]) return;
   state.foodLogs[date] = state.foodLogs[date].filter(e => e.id !== id);
   saveState();
+}
+
+// ── Water log ─────────────────────────────────────────────────────────────
+const WATER_GOAL_OZ = 120;
+
+function getWaterToday() {
+  return state.waterLog[todayISO()] || 0;
+}
+function logWater(oz) {
+  const today = todayISO();
+  state.waterLog[today] = Math.max(0, (state.waterLog[today] || 0) + oz);
+  saveState();
+}
+function waterGoalDaysThisWeek() {
+  let count = 0;
+  const now = new Date();
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(now); d.setDate(d.getDate() - i);
+    if ((state.waterLog[d.toISOString().slice(0, 10)] || 0) >= WATER_GOAL_OZ) count++;
+  }
+  return count;
+}
+
+// ── Weekly report helpers ──────────────────────────────────────────────────
+function weightLoggedThisWeek() {
+  const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 7);
+  return state.bodyWeight.some(e => new Date(e.date + 'T12:00:00') >= cutoff);
 }
