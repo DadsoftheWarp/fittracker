@@ -1,6 +1,7 @@
 :root {
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --nav-height: calc(52px + env(safe-area-inset-bottom, 0px));
 
   /* Surfaces */
   --surface-0:  #F2F2F7;
@@ -57,14 +58,14 @@ body { display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; 
 .streak-badge { background: rgba(255,255,255,0.18); border-radius: 20px; padding: 5px 12px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 5px; white-space: nowrap; color: #fff; }
 
 /* ── Bottom nav ── */
-.nav { display: flex; background: var(--surface-2); border-top: 0.5px solid var(--border); padding-bottom: env(safe-area-inset-bottom, 0px); flex-shrink: 0; order: 99; }
+.nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex; background: var(--surface-2); border-top: 0.5px solid var(--border); padding-bottom: env(safe-area-inset-bottom, 0px); z-index: 50; }
 .nav-btn { flex: 1; padding: 9px 2px 7px; border: none; background: none; color: var(--text-muted); font-size: 10px; font-weight: 600; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; letter-spacing: 0.02em; transition: color 0.15s; }
 .nav-btn i { font-size: 21px; }
 .nav-btn.active { color: #1D9E75; }
 
 /* ── Screens ── */
 main { flex: 1; min-height: 0; position: relative; }
-.screen { display: none; position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+.screen { display: none; position: absolute; top: 0; left: 0; right: 0; bottom: var(--nav-height); overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
 .screen.active { display: block; }
 .pad { padding: 16px; }
 
@@ -215,7 +216,7 @@ input:focus, select:focus { border-color:#1D9E75; }
 .empty i { font-size:32px; display:block; margin-bottom:8px; opacity:.4; }
 
 /* ── Toast ── */
-.toast { position:fixed; bottom:calc(72px + env(safe-area-inset-bottom, 0px)); left:50%; transform:translateX(-50%) translateY(20px); background:var(--text-primary); color:var(--surface-2); padding:10px 20px; border-radius:20px; font-size:14px; font-weight:500; opacity:0; transition:all .25s; pointer-events:none; white-space:nowrap; z-index:100; max-width:90vw; }
+.toast { position:fixed; bottom:calc(var(--nav-height) + 12px); left:50%; transform:translateX(-50%) translateY(20px); background:var(--text-primary); color:var(--surface-2); padding:10px 20px; border-radius:20px; font-size:14px; font-weight:500; opacity:0; transition:all .25s; pointer-events:none; white-space:nowrap; z-index:100; max-width:90vw; }
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
 ::-webkit-scrollbar { width:0; }
